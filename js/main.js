@@ -25,24 +25,13 @@ function drawTwoCards(){
       .then(data => {
         console.log(data)
 
+        // Gets card images and displays them on the DOM
         document.getElementById("img1").src = data.cards[0].images.png
         document.getElementById("img2").src = data.cards[1].images.png
+
+        // Allows the numeric comparison of the value of the cards and saves it to the following variables for later use in comparison statements.
         let playerCard = cardLogic(data.cards[0].value);
         let botCard = cardLogic(data.cards[1].value);
-
-        function playerVsBotCardFlip() {
-        
-          if (playerCard > botCard) {
-            console.log("player takes both cards and places them on the bottom of their pile")
-          } else if (playerCard < botCard) {
-            console.log("bot takes both cards and places them on the bottom of their pile")
-          } else if (playerCard === botCard) {
-            console.log("warTime()");
-          } else {
-            console.log("An error has ocurred.")
-          }
-        }        
-        playerVsBotCardFlip()
 
         function cardLogic(value) {
           if (value === "JACK") {
@@ -58,6 +47,23 @@ function drawTwoCards(){
           }
         }
 
+        // Compares the numeric value of the cards. If the numberic value of both is the same, it triggers the warTime() function.
+        function playerVsBotCardFlip() {
+        
+          if (playerCard > botCard) {
+            console.log("player takes both cards and places them on the bottom of their pile")
+          } else if (playerCard < botCard) {
+            console.log("bot takes both cards and places them on the bottom of their pile")
+          } else if (playerCard === botCard) {
+            console.log("warTime()");
+          } else {
+            console.log("An error has ocurred.")
+          }
+        }        
+        playerVsBotCardFlip()
+
+     
+
 
       })
       .catch(err => {
@@ -67,7 +73,6 @@ function drawTwoCards(){
 
 // Pseudocode dis bitch
 // Okay, War is a card game where two players take a card out and put it in front of them. The one with the higher value card wins and takes both their own card and their opponents. If both players present a card that has the same value as their opponents, then WAR happens:
-
 
 
 // If WAR happens, each player puts three cards face down, and then places a final card face up. The player with the highest value card takes all the cards and puts them on the bottom of their pile. If there is a stalemate again, then WAR repeats until one of the cards is higher than the other, in which case the winner takes them all.
