@@ -1,39 +1,36 @@
-document.querySelector('button').addEventListener('click', getFetch)
+let deckId = "";
 
-function getFetch(){
-  const url = "https://deckofcardsapi.com/api/deck/new/draw/?count=2"
+fetch("https://deckofcardsapi.com/api/deck/new/")
+      .then(res => res.json()) // parse response as JSON
+      .then(data => {
+        console.log(data)
+        deckId = data.deck_id
+      })
+      .catch(err => {
+          console.log(`error ${err}`)
+      });
+
+
+// Setting the deckId in localStorage - Figure out how to set it properly so that the deckId is the same for the user.
+// window.localStorage.setItem("deckId", `${deckId}`)
+
+
+document.querySelector('button').addEventListener('click', drawTwoCards)
+
+function drawTwoCards(){
+  const url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`
 
   fetch(url)
       .then(res => res.json()) // parse response as JSON
       .then(data => {
         console.log(data)
+
         document.getElementById("img1").src = data.cards[0].images.png
         document.getElementById("img2").src = data.cards[1].images.png
-
-        // Problem:
-        // The "value" property of the cards array goes from 1-10, but then it goes KING, JACK, QUEEN, ACE, and probably JOKER.
-        // I need to find a workaround on this, so perhaps I could give a numeric number to each of these cards and have my playerVsBotCardFlip take that logic in and apply it when necessary.
-
-        let playerCardValueProperty = data.cards[0].value;
-        let botCardValueProperty = data.cards[1].value; 
-
-        function cardLogic() {
-          if (playerCardValueProperty == Number() || botCardValueProperty == Number()) {
-            
-          } else if (playerCardValueProperty === "QUEEN" || botCardValueProperty === "QUEEN") {
-            return 12;
-          } else if (playerCardValueProperty === "KING" || botCardValueProperty === "KING") {
-            return 13;
-          } else if (playerCardValueProperty === "ACE" || botCardValueProperty === "ACE") {
-            return 1;
-          } else if (playerCardValueProperty === "JACK" || botCardValueProperty === "JACK") {
-            return 11;
-          }
-        }
+        let playerCard = cardLogic(data.cards[0].value);
+        let botCard = cardLogic(data.cards[1].value);
 
         function playerVsBotCardFlip() {
-          let playerCard = Number(data.cards[0].value);
-          let botCard = Number(data.cards[1].value);
         
           if (playerCard > botCard) {
             console.log("player takes both cards and places them on the bottom of their pile")
@@ -46,6 +43,21 @@ function getFetch(){
           }
         }        
         playerVsBotCardFlip()
+
+        function cardLogic(value) {
+          if (value === "JACK") {
+            return 11;
+          } else if (value === "QUEEN") {
+            return 12;
+          } else if (value === "KING") {
+            return 13;
+          } else if (value === "ACE") {
+            return 14;
+          } else {
+            return Number(value)
+          }
+        }
+
 
       })
       .catch(err => {
