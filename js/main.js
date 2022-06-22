@@ -16,6 +16,8 @@
 // TODO Work on a simple design for the application
 // TODO Hide the start-button and alt images and set it to only appear after the deck-button has been clicked on
 // TODO Modify the images alt value to reflect the card being shown at the time
+// TODO Unhide the deck-button once the remaining property gets the value of 0
+// TODO Break the app to see how to solve unusual situations (if a player runs out of cards while in the middle of WAR, for example)
 
 
 
